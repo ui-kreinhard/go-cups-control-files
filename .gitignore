@@ -1,0 +1,11 @@
+bin/
+vendor/
+coverage.out
+vscode/
+pkg/
+.vscode/
+.idea/
+*.iml
+packrd/
+*-packr.go
+go-cups-control-files
