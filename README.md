@@ -7,7 +7,7 @@ It's rather difficult to extract more than the common metadatas from a printing 
 This tool is a go clone of the testipp tool. Because I was unable to compile cups staticly and I would like to be able later to use it in other go based applications I've rewritten it on a weekend in go :)
 
 # What it can (currently) do
-It can currently dump nearly all attributes of a control file in json. The attribute job-sheets is currently not implemented yet. I haven't figured out the enum format currently :)
+It can currently dump nearly all attributes of a control file in json as far as I know 
 
 # How to use
 First, you have to clone and build it - no releases are currently provieded

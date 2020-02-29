@@ -161,6 +161,11 @@ func strategy(position int, jobFileBytes []byte, newJob *Job) {
 	} else if compareToString("job-state", jobFileBytes, position) {
 		jobState := extractJobState(jobFileBytes, position) 
 		newJob.JobAttributesTag.JobState = &jobState
+	} else if compareToString("job-sheets", jobFileBytes, position) {
+		jobSheetsFirstPart := extractString(position+len("job-sheets"), jobFileBytes)
+		jobSheetsSecondPart := extractString(position+len("job-sheets")+len(*jobSheetsFirstPart)+5, jobFileBytes)
+		jobSheetsString := *jobSheetsFirstPart + "," + *jobSheetsSecondPart
+		newJob.JobAttributesTag.JobSheets = &jobSheetsString
 	}
 }
 
