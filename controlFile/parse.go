@@ -4,6 +4,7 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
+	"strconv"
 )
 
 /*
@@ -157,7 +158,33 @@ func strategy(position int, jobFileBytes []byte, newJob *Job) {
 	} else if compareToString("job-printer-uri", jobFileBytes, position) {
 		jobPrinterUi := extractString(position+len("job-printer-uri"), jobFileBytes)
 		newJob.JobAttributesTag.JobPrinterUri = jobPrinterUi
+	} else if compareToString("job-state", jobFileBytes, position) {
+		jobState := extractJobState(jobFileBytes, position) 
+		newJob.JobAttributesTag.JobState = &jobState
 	}
+}
+
+func extractJobState(jobFileBytes []byte, position int) string{
+	jobStateNum := jobFileBytes[position+len("job-sate") + 6]
+	switch jobStateNum {
+	case 3:
+		return "pending"
+	case 4:
+		return "pending-held"
+	case 5:
+		return "processing"
+	case 6:
+		return "processing-stopped"
+	case 7:
+		return "canceled"
+	case 8:
+		return "aborted"
+	case 9:
+		return "completed"
+	default:
+		return strconv.Itoa(int(jobStateNum)) + " unknown"
+	}
+	return strconv.Itoa(int(jobStateNum)) + " unknown"
 }
 
 func ParseBytes(jobFileBytes []byte) *Job {
