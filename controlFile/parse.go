@@ -170,7 +170,7 @@ func strategy(position int, jobFileBytes []byte, newJob *Job) {
 }
 
 func extractJobState(jobFileBytes []byte, position int) string{
-	jobStateNum := jobFileBytes[position+len("job-sate") + 6]
+	jobStateNum := jobFileBytes[position+len("job-state") + 6]
 	switch jobStateNum {
 	case 3:
 		return "pending"
