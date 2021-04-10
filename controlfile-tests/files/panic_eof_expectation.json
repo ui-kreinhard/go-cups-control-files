@@ -1,0 +1,29 @@
+{
+  "OperationsAttributesTag": {
+    "AttributesCharset": "utf-8",
+    "AttributesNaturalLanguage": "\u0005en-gb\u0002"
+  },
+  "JobAttributesTag": {
+    "PrinterUri": "ipp://localhost:631/printers/TTP-345",
+    "JobOriginatingUserName": "dell",
+    "JobName": "TTP-345 - CUPS 2.3.1",
+    "Copies": 6,
+    "DocumentFormat": "application/pdf",
+    "JobPriority": 50,
+    "JobUuid": "urn:uuid:6c852e96-5d13-3e75-4089-a365b416bcae",
+    "JobOriginatingHostName": "localhost",
+    "TimeAtCreation": 1617740601,
+    "TimeAtProcessing": 553649770,
+    "TimeAtCompleted": 553652340,
+    "JobId": 555,
+    "JobState": "68 unknown",
+    "JobStateReasons": null,
+    "JobMediaSheetsCompleted": 1869443180,
+    "JobPrinterUri": "ipp://dells-Apollo/printers/TTP-345",
+    "JobKOctets": 67,
+    "JobHoldUntil": "no-hold",
+    "JobSheets": "none,none",
+    "JobPrinterStateMessage": null,
+    "JobPrinterStateReasons": "none"
+  }
+}
