@@ -97,7 +97,7 @@ func findEnd(start int, jobFileBytes []byte) int {
 			return start + i - 1
 		}
 	}
-	return -1
+	return len(jobFileBytes)-1
 }
 
 func extractString(position int, jobFileBytes []byte) *string {
