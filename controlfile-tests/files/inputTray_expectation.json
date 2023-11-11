@@ -1,0 +1,31 @@
+{
+    "OperationsAttributesTag": {
+      "AttributesCharset": "utf-8",
+      "AttributesNaturalLanguage": "\u0005en-us\u0002"
+    },
+    "JobAttributesTag": {
+      "PrinterUri": "ipp://localhost/printers/MFC-7820N",
+      "JobOriginatingUserName": "reinhard",
+      "JobName": "Die Anmeldung zum Online-Check-in ist abgeschlossen _ B&B HOTELS",
+      "Copies": 1,
+      "DocumentFormat": "application/pdf",
+      "JobPriority": 50,
+      "JobUuid": "urn:uuid:202bced3-1202-3f96-5eed-530dd15d2666",
+      "JobOriginatingHostName": "localhost",
+      "TimeAtCreation": 1699698471,
+      "TimeAtProcessing": 1699698472,
+      "TimeAtCompleted": 1699698498,
+      "JobId": 54,
+      "JobState": "68 unknown",
+      "JobStateReasons": null,
+      "JobMediaSheetsCompleted": 1869443180,
+      "JobPrinterUri": "ipp://tuxedo3/printers/MFC-7820N",
+      "JobKOctets": 103,
+      "JobHoldUntil": "no-hold",
+      "JobSheets": "none,none",
+      "JobPrinterStateMessage": "Use \"pdftops-renderer\" option (see cups-filters README file) to use Ghostscript or MuPDF for the PDF -> PostScript conversion.",
+      "JobPrinterStateReasons": "job-canceled-by-user",
+      "InputTray": "Tray1"
+    }
+  }
+  

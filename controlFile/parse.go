@@ -34,11 +34,11 @@ job-attributes-tag:
     job-k-octets (integer): 20
     job-hold-until (keyword): no-hold
     job-sheets (1setOf nameWithoutLanguage): none,none
-    job-printer-state-message (textWithoutLanguage): 
+    job-printer-state-message (textWithoutLanguage):
     job-printer-state-reasons (keyword): none
 
 
- */
+*/
 
 type OperationsAttributesTag struct {
 	AttributesCharset         *string
@@ -67,6 +67,7 @@ type JobAttributesTag struct {
 	JobSheets               *string
 	JobPrinterStateMessage  *string
 	JobPrinterStateReasons  *string
+	InputTray               *string
 }
 
 type Job struct {
@@ -97,7 +98,7 @@ func findEnd(start int, jobFileBytes []byte) int {
 			return start + i - 1
 		}
 	}
-	return len(jobFileBytes)-1
+	return len(jobFileBytes) - 1
 }
 
 func extractString(position int, jobFileBytes []byte) *string {
@@ -167,11 +168,13 @@ func strategy(position int, jobFileBytes []byte, newJob *Job) {
 		jobSheetsSecondPart := extractString(position+len("job-sheets")+len(*jobSheetsFirstPart)+5, jobFileBytes)
 		jobSheetsString := *jobSheetsFirstPart + "," + *jobSheetsSecondPart
 		newJob.JobAttributesTag.JobSheets = &jobSheetsString
+	case compareToString("InputSlot", jobFileBytes, position):
+		newJob.JobAttributesTag.InputTray = extractString(position+len("InputSlot"), jobFileBytes)
 	}
 }
 
-func extractJobState(jobFileBytes []byte, position int) string{
-	jobStateNum := jobFileBytes[position+len("job-state") + 6]
+func extractJobState(jobFileBytes []byte, position int) string {
+	jobStateNum := jobFileBytes[position+len("job-state")+6]
 	switch jobStateNum {
 	case 3:
 		return "pending"
