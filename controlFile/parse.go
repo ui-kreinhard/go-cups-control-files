@@ -34,11 +34,11 @@ job-attributes-tag:
     job-k-octets (integer): 20
     job-hold-until (keyword): no-hold
     job-sheets (1setOf nameWithoutLanguage): none,none
-    job-printer-state-message (textWithoutLanguage): 
+    job-printer-state-message (textWithoutLanguage):
     job-printer-state-reasons (keyword): none
 
 
- */
+*/
 
 type OperationsAttributesTag struct {
 	AttributesCharset         *string
@@ -67,6 +67,7 @@ type JobAttributesTag struct {
 	JobSheets               *string
 	JobPrinterStateMessage  *string
 	JobPrinterStateReasons  *string
+	InputTray               *string
 }
 
 type Job struct {
@@ -97,7 +98,7 @@ func findEnd(start int, jobFileBytes []byte) int {
 			return start + i - 1
 		}
 	}
-	return len(jobFileBytes)-1
+	return len(jobFileBytes) - 1
 }
 
 func extractString(position int, jobFileBytes []byte) *string {
@@ -114,63 +115,66 @@ func extractInt(position int, jobFileBytes []byte) *uint32 {
 }
 
 func strategy(position int, jobFileBytes []byte, newJob *Job) {
-	if compareToString("job-state-reasons", jobFileBytes, position) {
-		newJob.JobAttributesTag.JobPrinterStateReasons = extractString(position + len("job-state-reasons"), jobFileBytes)
-	} else if compareToString("job-printer-state-message", jobFileBytes, position) {
-		newJob.JobAttributesTag.JobPrinterStateMessage = extractString(position + len("job-printer-state-message"), jobFileBytes)
-	} else if compareToString("job-hold-until", jobFileBytes, position) {
-		newJob.JobAttributesTag.JobHoldUntil = extractString(position + len("job-hold-until"), jobFileBytes)
-	} else if compareToString("job-k-octets", jobFileBytes, position) {
-		newJob.JobAttributesTag.JobKOctets = extractInt(position + len("job-k-octets"), jobFileBytes)
-	} else if compareToString("job-media-sheets-completed", jobFileBytes, position) {
-		newJob.JobAttributesTag.JobMediaSheetsCompleted = extractInt(position + len("job-media-sheets"), jobFileBytes)
-	} else if compareToString("job-state-reasons", jobFileBytes, position) {
-		newJob.JobAttributesTag.JobStateReasons = extractString(position+len("job-state-reasons"), jobFileBytes)	
-	} else if compareToString("job-id", jobFileBytes, position) {
+	switch {
+	case compareToString("job-state-reasons", jobFileBytes, position):
+		newJob.JobAttributesTag.JobPrinterStateReasons = extractString(position+len("job-state-reasons"), jobFileBytes)
+	case compareToString("job-printer-state-message", jobFileBytes, position):
+		newJob.JobAttributesTag.JobPrinterStateMessage = extractString(position+len("job-printer-state-message"), jobFileBytes)
+	case compareToString("job-hold-until", jobFileBytes, position):
+		newJob.JobAttributesTag.JobHoldUntil = extractString(position+len("job-hold-until"), jobFileBytes)
+	case compareToString("job-k-octets", jobFileBytes, position):
+		newJob.JobAttributesTag.JobKOctets = extractInt(position+len("job-k-octets"), jobFileBytes)
+	case compareToString("job-media-sheets-completed", jobFileBytes, position):
+		newJob.JobAttributesTag.JobMediaSheetsCompleted = extractInt(position+len("job-media-sheets"), jobFileBytes)
+	case compareToString("job-state-reasons", jobFileBytes, position):
+		newJob.JobAttributesTag.JobStateReasons = extractString(position+len("job-state-reasons"), jobFileBytes)
+	case compareToString("job-id", jobFileBytes, position):
 		newJob.JobAttributesTag.JobId = extractInt(position+len("job-id"), jobFileBytes)
-	} else if compareToString("time-at-completed", jobFileBytes, position) {
+	case compareToString("time-at-completed", jobFileBytes, position):
 		newJob.JobAttributesTag.TimeAtCompleted = extractInt(position+len("time-at-completed"), jobFileBytes)
-	} else if compareToString("time-at-processing", jobFileBytes, position) {
+	case compareToString("time-at-processing", jobFileBytes, position):
 		newJob.JobAttributesTag.TimeAtProcessing = extractInt(position+len("time-at-processing"), jobFileBytes)
-	} else if compareToString("time-at-creation", jobFileBytes, position) {
+	case compareToString("time-at-creation", jobFileBytes, position):
 		newJob.JobAttributesTag.TimeAtCreation = extractInt(position+len("time-at-creation"), jobFileBytes)
-	} else if compareToString("job-originating-host-name", jobFileBytes, position) {
+	case compareToString("job-originating-host-name", jobFileBytes, position):
 		newJob.JobAttributesTag.JobOriginatingHostName = extractString(position+len("job-originating-host-name"), jobFileBytes)
-	} else if compareToString("job-uuid", jobFileBytes, position) {
+	case compareToString("job-uuid", jobFileBytes, position):
 		newJob.JobAttributesTag.JobUuid = extractString(position+len("job-uuid"), jobFileBytes)
-	} else if compareToString("job-priority", jobFileBytes, position) {
+	case compareToString("job-priority", jobFileBytes, position):
 		newJob.JobAttributesTag.JobPriority = extractInt(position+len("job-priority"), jobFileBytes)
-	} else if compareToString("document-format", jobFileBytes, position) {
+	case compareToString("document-format", jobFileBytes, position):
 		newJob.JobAttributesTag.DocumentFormat = extractString(position+len("document-format"), jobFileBytes)
-	} else if compareToString("copies", jobFileBytes, position) {
+	case compareToString("copies", jobFileBytes, position):
 		newJob.JobAttributesTag.Copies = extractInt(position+len("copies"), jobFileBytes)
-	} else if compareToString("job-name", jobFileBytes, position) {
+	case compareToString("job-name", jobFileBytes, position):
 		newJob.JobAttributesTag.JobName = extractString(position+len("job-name"), jobFileBytes)
-	} else if compareToString("job-originating-user-name", jobFileBytes, position) {
+	case compareToString("job-originating-user-name", jobFileBytes, position):
 		newJob.JobAttributesTag.JobOriginatingUserName = extractString(position+len("job-originating-user-name"), jobFileBytes)
-	} else if compareToString("attributes-natural-language", jobFileBytes, position) {
+	case compareToString("attributes-natural-language", jobFileBytes, position):
 		newJob.OperationsAttributesTag.AttributesNaturalLanguage = extractString(position+len("attributes-natural-language")-1, jobFileBytes)
-	} else if compareToString("attributes-charset", jobFileBytes, position) {
+	case compareToString("attributes-charset", jobFileBytes, position):
 		newJob.OperationsAttributesTag.AttributesCharset = extractString(position+len("attributes-charset"), jobFileBytes)
-	} else if compareToString("printer-uri", jobFileBytes, position) {
+	case compareToString("printer-uri", jobFileBytes, position):
 		printerUri := extractString(position+len("printer-uri"), jobFileBytes)
 		newJob.JobAttributesTag.PrinterUri = printerUri
-	} else if compareToString("job-printer-uri", jobFileBytes, position) {
+	case compareToString("job-printer-uri", jobFileBytes, position):
 		jobPrinterUi := extractString(position+len("job-printer-uri"), jobFileBytes)
 		newJob.JobAttributesTag.JobPrinterUri = jobPrinterUi
-	} else if compareToString("job-state", jobFileBytes, position) {
-		jobState := extractJobState(jobFileBytes, position) 
+	case compareToString("job-state", jobFileBytes, position):
+		jobState := extractJobState(jobFileBytes, position)
 		newJob.JobAttributesTag.JobState = &jobState
-	} else if compareToString("job-sheets", jobFileBytes, position) {
+	case compareToString("job-sheets", jobFileBytes, position):
 		jobSheetsFirstPart := extractString(position+len("job-sheets"), jobFileBytes)
 		jobSheetsSecondPart := extractString(position+len("job-sheets")+len(*jobSheetsFirstPart)+5, jobFileBytes)
 		jobSheetsString := *jobSheetsFirstPart + "," + *jobSheetsSecondPart
 		newJob.JobAttributesTag.JobSheets = &jobSheetsString
+	case compareToString("InputSlot", jobFileBytes, position):
+		newJob.JobAttributesTag.InputTray = extractString(position+len("InputSlot"), jobFileBytes)
 	}
 }
 
-func extractJobState(jobFileBytes []byte, position int) string{
-	jobStateNum := jobFileBytes[position+len("job-state") + 6]
+func extractJobState(jobFileBytes []byte, position int) string {
+	jobStateNum := jobFileBytes[position+len("job-state")+6]
 	switch jobStateNum {
 	case 3:
 		return "pending"

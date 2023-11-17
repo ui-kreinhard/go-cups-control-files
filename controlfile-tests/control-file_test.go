@@ -25,4 +25,8 @@ func TestControlFileAgainstJson(t *testing.T) {
 	t.Run("should parse successfully with attribute at end of the file", func(t *testing.T) {
 		assertControlFileToJson(t, "files/panic_eof")
 	})
+
+	t.Run("should contain InputTray element", func(t *testing.T) {
+		assertControlFileToJson(t, "files/inputTray")
+	})
 }
