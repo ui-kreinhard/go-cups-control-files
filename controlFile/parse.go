@@ -68,6 +68,7 @@ type JobAttributesTag struct {
 	JobPrinterStateMessage  *string
 	JobPrinterStateReasons  *string
 	InputTray               *string
+	Media                   *string
 }
 
 type Job struct {
@@ -170,6 +171,8 @@ func strategy(position int, jobFileBytes []byte, newJob *Job) {
 		newJob.JobAttributesTag.JobSheets = &jobSheetsString
 	case compareToString("InputSlot", jobFileBytes, position):
 		newJob.JobAttributesTag.InputTray = extractString(position+len("InputSlot"), jobFileBytes)
+	case compareToString("media", jobFileBytes, position):
+		newJob.JobAttributesTag.Media = extractString(position+len("media"), jobFileBytes)
 	}
 }
 
